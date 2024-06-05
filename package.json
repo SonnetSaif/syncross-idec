@@ -1,0 +1,66 @@
+{
+  "name": "syncross-idec",
+  "displayName": "SYNCROSS IDE Connector",
+  "publisher": "SYNCROSS",
+  "description": "A Connector Between SYNCROSS and VSCode",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "syncross-idec.pullAllWidgetBundles",
+        "title": "Pull All Bundles and All Widgets"
+      },
+      {
+        "command": "syncross-idec.pullSingleWidgetBundle",
+        "title": "Pull A Bundle with All Widgets"
+      },
+      {
+        "command": "syncross-idec.pullSingleWidget",
+        "title": "Pull A Single Widget From a Bundle"
+      },
+      {
+        "command": "syncross-idec.code",
+        "title": "Code"
+      },
+      {
+        "command": "syncross-idec.createCredentials",
+        "title": "Generate Credential File"
+      }
+    ],
+    "keybindings": [
+      {
+        "key": "ctrl+u",
+        "command": "syncross-idec.code"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "glob": "^10.3.10",
+    "pg": "^8.11.3",
+    "undici": "^6.10.1"
+  }
+}

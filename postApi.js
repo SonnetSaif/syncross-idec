@@ -38,78 +38,87 @@ async function comparisonAndPost(getUrl, postUrl, token, bundleAlias, alias, fil
       "headers": {
         "X-Authorization": `Bearer ${token}`
       }
-    }).then(res => res.json()).then(data1 => {
-      // @ts-ignore
-      data1.data.forEach(row => {
-        if (row.name === alias) {
-          widgetId = row.id.id;
-        }
-      })
+    }).then(res => {
+      return res.json()
     })
-    
+      .then(data1 => {
+        data1.data.forEach(row => {
+          // if (row.name === alias) {
+          if (row.fqn === alias) {
+            widgetId = row.id.id;
+          }
+        })
+      })
+
     const getUrl2 = credentials.getWidgetType + widgetId + `?inlineImages=true`;
+    // const getUrl2 = credentials.getWidgetType + widgetId;
     await fetch(getUrl2, {
       "headers": {
         "X-Authorization": `Bearer ${token}`
       }
-    }).then(res => res.json()).then(async data2 => {
-      // @ts-ignore
-      if (data2.name == alias && data2.createdTime < stats) {
-        try {
-          let data = await fs.readFileSync(filePath, 'utf8');
-          const payLoad =
-          {
-            "id": {
-              // @ts-ignore
-              "entityType": data2.id.entityType,
-              // @ts-ignore
-              "id": data2.id.id
-            },
-            "createdTime": stats,
-            // "bundleAlias": i.bundleAlias,
-            // "alias": i.alias,
-            // "name": i.name,
-            "deprecated": false,
-            // @ts-ignore
-            "description": data2.description,
-            "descriptor": JSON.parse(data),
-            // @ts-ignore
-            "fqn": data2.name,
-            // @ts-ignore
-            "image": data2.image,
-            // @ts-ignore
-            "name": data2.name,
-            "tags": null
-          };
+    }).then(res => {
+      return res.json()
+    })
+      .then(async data2 => {
+        // if (data2.name == alias && data2.createdTime < stats) {
+        if (data2.fqn == alias && data2.createdTime < stats) {
+
           try {
-            await fetch(postUrl, {
-              method: `POST`,
-              headers: {
-                "Content-Type": `application/json`,
-                "X-Authorization": `Bearer ${token}`
+            let data = await fs.readFileSync(filePath, 'utf8');
+            const payLoad =
+            {
+              "id": {
+                "entityType": data2.id.entityType,
+                "id": data2.id.id
               },
-              body: JSON.stringify(payLoad)
-            });
-            vscode.window.showInformationMessage(`File Successfully Pushed!: ${filePath}`);
-            console.log(`File successfully pushed!: ${filePath}`);
+              "createdTime": stats,
+              // "bundleAlias": i.bundleAlias,
+              // "alias": i.alias,
+              // "name": i.name,
+              "deprecated": false,
+              "description": data2.description,
+              "descriptor": JSON.parse(data),
+              "fqn": data2.name,
+              "image": data2.image,
+              "name": data2.name,
+              "tags": null
+            };
+            try {
+              await fetch(postUrl, {
+                method: `POST`,
+                headers: {
+                  "Content-Type": `application/json`,
+                  "X-Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(payLoad)
+              }).then(responseReturn => {
+                const statusCode = responseReturn.status;
+                if (statusCode === 200) {
+                  vscode.window.showInformationMessage(`File Successfully Pushed!: ${filePath}`);
+                  console.log(`File successfully pushed!: ${filePath}`);
+                } else {
+                  vscode.window.showErrorMessage(`Error Pushing File`);
+                  console.error(`Error pushing file. Status code: ${statusCode}`);
+                }
+              })
+            }
+            catch (error) {
+              vscode.window.showErrorMessage(`POST API Request Error`);
+              console.error(`POST request error: ${error.message}`);
+              return false;
+            }
           }
           catch (error) {
-            vscode.window.showErrorMessage(`POST API Request Error`);
-            console.error(`POST request error: ${error.message}`);
+            vscode.window.showErrorMessage(`Problem Occured with the ${filePath}`);
+            console.error(`Problem occured with the ${filePath}: \n ${error.message}`);
             return false;
           }
         }
-        catch (error) {
-          vscode.window.showErrorMessage(`Problem Occured with the ${filePath}`);
-          console.error(`Problem occured with the ${filePath}: \n ${error.message}`);
-          return false;
+        else {
+          // vscode.window.showWarningMessage(`Modification Time Already Updated! or Wrong Widget`);
+          // console.warn("modification time already updated! or Wrong Widget");
         }
-      }
-      else {
-        vscode.window.showWarningMessage(`Modification Time Already Updated! or Wrong Widget`);
-        console.warn("modification time already updated! or Wrong Widget");
-      }
-    })
+      })
   }
   catch (error) {
     vscode.window.showErrorMessage(`GET API Request Error`);

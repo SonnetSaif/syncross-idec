@@ -7,7 +7,7 @@ async function processConfigFile(workspaceFolderPath) {
         const credentialsFilePath = path.join(workspaceFolderPath, 'credentials.json');
         const credentialsData = await fs.readFile(credentialsFilePath, 'utf8');
         const credentials = JSON.parse(credentialsData);
-
+        
         const loginUrlRegex = /^(https?):\/\/[^\s/$.?#].[^\s]*$/;
         if (!loginUrlRegex.test(credentials.loginUrl)) {
             vscode.window.showErrorMessage("Invalid loginUrl");

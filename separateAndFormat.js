@@ -75,9 +75,9 @@ async function formatAndWriteFile(parentJsonDataFilePath, key, value) {
 }
 
 async function separateAndFormat(workspaceFolderPath, bundleAlias, alias) {
-    const jsonDataFilePath = path.join(workspaceFolderPath, `/bundles/${bundleAlias}/${alias}/.default.json`);
+    const jsonDataFilePath = path.join(workspaceFolderPath, "bundles", bundleAlias, alias, ".default.json");
     const jsonData = await readJsonDataFromFile(jsonDataFilePath);
-    if(jsonData == false) return;
+    if (jsonData == false) return;
     const parentJsonDataFilePath = path.join(jsonDataFilePath, '..');
     for (const key in jsonData) {
         if (jsonData.hasOwnProperty(key)) {

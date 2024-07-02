@@ -27,7 +27,7 @@ async function processDirectories(workspaceFolderPath, bundleAlias, alias) {
 		const additionalDirectoryPath = path.join(workspaceFolderPath, additionalDirectory);
 		const additionalDirectories = fs.readdirSync(additionalDirectoryPath);
 		for (let directory of additionalDirectories) {
-			const directoryContents = fs.readdirSync(path.join(workspaceFolderPath, '/', additionalDirectory, '/', directory));
+			const directoryContents = fs.readdirSync(path.join(workspaceFolderPath, additionalDirectory, directory));
 			for (let content of directoryContents) {
 				try {
 					const returnFrom = await separateAndFormat(workspaceFolderPath, directory, content);
@@ -41,7 +41,7 @@ async function processDirectories(workspaceFolderPath, bundleAlias, alias) {
 		return true;
 	}
 	else if (bundleAlias !== "" && alias == "") {
-		const directoryContents = fs.readdirSync(path.join(workspaceFolderPath, '/', additionalDirectory, '/', bundleAlias));
+		const directoryContents = fs.readdirSync(path.join(workspaceFolderPath, additionalDirectory, bundleAlias));
 		for (let content of directoryContents) {
 			try {
 				const returnFrom = await separateAndFormat(workspaceFolderPath, bundleAlias, content);
@@ -65,9 +65,9 @@ async function WidgetDropdown(workspaceFolderPath) {
 		});
 	}
 
-	const directoryContents = fs.readdirSync(path.join(workspaceFolderPath, '/', additionalDirectory, '/', selectedDirectory));
+	const directoryContents = fs.readdirSync(path.join(workspaceFolderPath, additionalDirectory, selectedDirectory));
 	const subDirectories = directoryContents.filter(item => {
-		const fullPath = path.join(workspaceFolderPath, '/', additionalDirectory, '/', selectedDirectory, item);
+		const fullPath = path.join(workspaceFolderPath, additionalDirectory, selectedDirectory, item);
 		return fs.statSync(fullPath).isDirectory();
 	});
 
@@ -277,7 +277,7 @@ function activate(context) {
 			console.error('No workspace folder found.');
 			return;
 		}
-		
+
 		const workspaceFolderPath = workspaceFolders[0].uri.fsPath;
 		const credentialsFilePath = path.join(workspaceFolderPath, 'credentials.json');
 

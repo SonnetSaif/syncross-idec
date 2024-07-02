@@ -44,7 +44,7 @@ async function jsonOverride(workspaceFolderPath, bundleAlias, alias) {
                             console.error(`Problem occured with the ${secondFilePath}: \n ${error.message}`);
                             return false;
                         }
-                        vscode.window.showInformationMessage(`File Ready to Push!: ${resultFilePath}`);
+                        // vscode.window.showInformationMessage(`File Ready to Push!: ${resultFilePath}`);
                         console.log(`File ready to push!: ${resultFilePath}`);
                     });
                     return true;

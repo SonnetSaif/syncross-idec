@@ -15,6 +15,10 @@
   "contributes": {
     "commands": [
       {
+        "command": "syncross-idec.createCredentials",
+        "title": "Generate Credential File"
+      },
+      {
         "command": "syncross-idec.pullAllWidgetBundles",
         "title": "Pull All Bundles and All Widgets"
       },
@@ -29,10 +33,6 @@
       {
         "command": "syncross-idec.code",
         "title": "Code"
-      },
-      {
-        "command": "syncross-idec.createCredentials",
-        "title": "Generate Credential File"
       }
     ],
     "keybindings": [
@@ -51,16 +51,17 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
     "@types/vscode": "^1.85.0",
-    "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.8",
-    "eslint": "^8.56.0",
-    "prettier": "^3.2.4",
-    "typescript": "^5.3.3"
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "axios": "^1.6.7",
     "glob": "^10.3.10",
     "pg": "^8.11.3",
+    "prettier": "^2.8.8",
+    "typescript": "^5.4.5",
     "undici": "^6.10.1"
   }
 }

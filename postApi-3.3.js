@@ -52,9 +52,16 @@ async function comparisonAndPost(getUrl, postUrl, token, alias, filePath, stats)
                 "X-Authorization": `Bearer ${token}`
               },
               body: JSON.stringify(payLoad)
-            });
-            vscode.window.showInformationMessage(`File Successfully Pushed!: ${filePath}`);
-            console.log(`File successfully pushed!: ${filePath}`);
+            }).then(responseReturn => {
+              const statusCode = responseReturn.status;
+              if (statusCode === 200) {
+                vscode.window.showInformationMessage(`File Successfully Pushed!: ${filePath}`);
+                console.log(`File successfully pushed!: ${filePath}`);
+              } else {
+                vscode.window.showErrorMessage(`Error Pushing File`);
+                console.error(`Error pushing file. Status code: ${statusCode}`);
+              }
+            })
           }
           catch (error) {
             vscode.window.showErrorMessage(`POST API Request Error`);

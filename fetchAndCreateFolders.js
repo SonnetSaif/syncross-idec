@@ -46,12 +46,12 @@ async function fetchAndCreateFolders(workspaceFolderPath, bundleAlias, alias) {
                 const id = data.data.id.id;
                 const getUrl2 = credentials.getWidgetTypesInfos + id + `&fullSearch=false&deprecatedFilter=ALL`;
                 const data2 = await fetch(getUrl2, token);
-                
+
                 data2.data.data.forEach(async id => {
                     const widgetId = id.id.id;
                     const getUrl3 = credentials.getWidgetType + widgetId + `?inlineImages=true`;
                     const data4 = await fetch(getUrl3, token);
-                    
+
                     let bundleAlias = name;
                     let alias = data4.data.fqn;
                     let descriptor = data4.data.descriptor;
@@ -93,19 +93,19 @@ async function fetchAndCreateFolders(workspaceFolderPath, bundleAlias, alias) {
                 if (data == null) return;
                 let widgetBundleId = "";
                 data.data.forEach(id => {
-                    if(id.name == bundleAlias){
+                    if (id.name == bundleAlias) {
                         widgetBundleId = id.id.id;
                     }
                 })
-                
+
                 const getUrl = credentials.getWidgetTypesInfos + widgetBundleId + `&fullSearch=false&deprecatedFilter=ALL`;
                 const data1 = await fetch(getUrl, token);
-                
+
                 const bundlesParentFolder = path.join(workspaceFolderPath, 'bundles');
                 if (!fs.existsSync(bundlesParentFolder)) {
                     fs.mkdirSync(bundlesParentFolder);
                 }
-                data1.data.data.forEach( async id => {
+                data1.data.data.forEach(async id => {
                     const widgetId = id.id.id;
                     const getUrl3 = credentials.getWidgetType + widgetId + `?inlineImages=true`;
                     const data2 = await fetch(getUrl3, token);
@@ -131,7 +131,7 @@ async function fetchAndCreateFolders(workspaceFolderPath, bundleAlias, alias) {
                     fs.writeFileSync(jsonFilePath, jsonContent, 'utf-8');
 
                 })
-            
+
                 vscode.window.showInformationMessage(`Successfully Completed Fetching and Creating Folders!`);
                 console.log('Successfully completed fetching and creating folders!');
                 return true;
@@ -158,7 +158,7 @@ async function fetchAndCreateFolders(workspaceFolderPath, bundleAlias, alias) {
             const data1 = await fetch(getUrl, token);
             let widgetId = "";
             data1.data.data.forEach(row => {
-                if(row.name === alias){
+                if (row.name === alias) {
                     widgetId = row.id.id;
                 }
             })
@@ -170,7 +170,7 @@ async function fetchAndCreateFolders(workspaceFolderPath, bundleAlias, alias) {
 
             const getUrl1 = credentials.getWidgetType + widgetId + `?inlineImages=true`;
             const data2 = await fetch(getUrl1, token);
-            
+
             let descriptor = data2.data.descriptor;
 
             // Create main folder (bundle_alias)

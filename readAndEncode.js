@@ -31,7 +31,7 @@ async function writeToJsonFile(jsonData, outputPath) {
   try {
     const jsonString = JSON.stringify(jsonData, null, 2);
     await fs.writeFile(outputPath, jsonString, 'utf-8');
-    vscode.window.showInformationMessage(`File Encoded Successfully!: ${outputPath}`);
+    // vscode.window.showInformationMessage(`File Encoded Successfully!: ${outputPath}`);
     console.log(`File encoded successfully!: ${outputPath}`);
   }
   catch (error) {
